@@ -1,0 +1,11 @@
+VAR
+    raza : REAL;
+    aria : REAL;
+    perm : REAL;
+BEGIN
+    READ raza;
+    aria := 3.14 * raza * raza;
+    perm := 2 * 3.14 * raza;
+    WRITE aria;
+    WRITE perm;
+END
