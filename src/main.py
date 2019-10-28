@@ -38,7 +38,12 @@ def lab_2():
     finite_state_machine = FiniteStateMachine.read_machine('../data/state_machines/c_constants')
     print(finite_state_machine)
 
-    string_number_list = ['1255', '5464', '123x', '456y']
+    string_number_list = [
+        '0', '0001', '1', '2354124', '999',
+        '7', '07', '078',
+        '0x', '0x543', '0x35Fe34Bd', '0x35Fhe34Bd',
+        '0b', '0b0', '0b0101001', '0b0121'
+    ]
 
     for string in string_number_list:
         print(f'Verifying {string} acceptance: {finite_state_machine.verify_if_string_accepted(string)}')

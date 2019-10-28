@@ -76,7 +76,8 @@ class FiniteStateMachine:
 
             for line in file:
                 line = line.strip()
-                start_node, end_node, char = line.strip().split(' ')
-                finite_state_machine.graph[finite_state_machine.states[start_node]][char] = end_node
+                start_node, end_node, *chars = line.strip().split(' ')
+                for char in chars:
+                    finite_state_machine.graph[finite_state_machine.states[start_node]][char] = end_node
 
         return finite_state_machine
