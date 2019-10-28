@@ -52,11 +52,14 @@ class FiniteStateMachine:
 
     def get_prefix_for_a_string(self, string):
         current_state = self.states['0']
+        last_accepted_string = ''
         for index, char in enumerate(string):
             if char not in self.graph[current_state]:
-                return string[0:index]
+                return last_accepted_string
             current_state = self.states[self.graph[current_state][char]]
-        return string
+            if current_state.is_final:
+                last_accepted_string = string[0:index + 1]
+        return last_accepted_string
 
     @staticmethod
     def read_machine(file_name):
