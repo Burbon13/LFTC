@@ -1,5 +1,4 @@
 from src.table import Table
-import re
 
 NEWLINE = '\n'
 SPACE = ' '
@@ -71,17 +70,12 @@ def lexical_analyze(text, atoms_table, separator_list):
     @return: (internal form of the program, symbols table, const table)
     @throws: exception if any error is found inside the text
     """
-    line_list = []
-    for line in text.split(NEWLINE):
-        for token in line.split(SPACE):
-            line_list.append(token)
     atom_list = []
-
-    for index, line in enumerate(line_list):
-        line_atom_list = [(index + 1, atom) for atom in get_atoms_recursive(line, index, separator_list)]
-        atom_list = [*atom_list, *line_atom_list]
-
-    atom_list = [non_empty_atom for non_empty_atom in atom_list if non_empty_atom[1] != '']
+    for index, line in enumerate(text.split(NEWLINE)):
+        for token in line.split(SPACE):
+            line_atom_list = [(index + 1, atom) for atom in get_atoms_recursive(line, token, separator_list) if
+                              atom != '']
+            atom_list = [*atom_list, *line_atom_list]
 
     const_symbol_table = Table()
     id_symbol_table = Table()
