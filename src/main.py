@@ -35,7 +35,8 @@ def lab_1():
 
 
 def lab_2():
-    FiniteStateMachine.read_machine('../data/state_machines/c_constants')
-    a = 3
+    finite_state_machine = FiniteStateMachine.read_machine('../data/state_machines/c_constants')
+    print(finite_state_machine)
+
 
 lab_2()
