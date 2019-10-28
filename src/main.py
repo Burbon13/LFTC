@@ -38,5 +38,11 @@ def lab_2():
     finite_state_machine = FiniteStateMachine.read_machine('../data/state_machines/c_constants')
     print(finite_state_machine)
 
+    string_number_list = ['1255', '5464', '123x', '456y']
+
+    for string in string_number_list:
+        print(f'Verifying {string} acceptance: {finite_state_machine.verify_if_string_accepted(string)}')
+        print(f'Retrieving {string} longest prefix: {finite_state_machine.get_prefix_for_a_string(string)}\n')
+
 
 lab_2()

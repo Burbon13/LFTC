@@ -2,7 +2,6 @@ class State:
     def __init__(self, key, is_final):
         self.key = key
         self.is_final = is_final
-        self.next_states = []
 
     def __hash__(self):
         return int(self.key)
@@ -34,7 +33,7 @@ class FiniteStateMachine:
         str_result += '###### Transitions ######\n'
         for key, value in self.graph.items():
             for edge in value:
-                str_result += key.key + ' -- ' + edge[1] + ' --> ' + edge[0] + '\n'
+                str_result += key.key + ' -- ' + edge + ' --> ' + value[edge] + '\n'
 
         str_result += '###### Final states ######\n'
         for _, state in self.states.items():
@@ -42,6 +41,22 @@ class FiniteStateMachine:
                 str_result += str(state) + '\n'
 
         return str_result
+
+    def verify_if_string_accepted(self, string):
+        current_state = self.states['0']
+        for char in string:
+            if char not in self.graph[current_state]:
+                return False
+            current_state = self.states[self.graph[current_state][char]]
+        return current_state.is_final
+
+    def get_prefix_for_a_string(self, string):
+        current_state = self.states['0']
+        for index, char in enumerate(string):
+            if char not in self.graph[current_state]:
+                return string[0:index]
+            current_state = self.states[self.graph[current_state][char]]
+        return string
 
     @staticmethod
     def read_machine(file_name):
@@ -57,11 +72,11 @@ class FiniteStateMachine:
                 value, is_final = state.strip().split(',')
                 state = State(value, True if is_final == '1' else False)
                 finite_state_machine.states[value] = state
-                finite_state_machine.graph[state] = []
+                finite_state_machine.graph[state] = {}
 
             for line in file:
                 line = line.strip()
                 start_node, end_node, char = line.strip().split(' ')
-                finite_state_machine.graph[finite_state_machine.states[start_node]].append((end_node, char))
+                finite_state_machine.graph[finite_state_machine.states[start_node]][char] = end_node
 
         return finite_state_machine
