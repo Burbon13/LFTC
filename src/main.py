@@ -50,4 +50,4 @@ def lab_2():
         print(f'Retrieving {string} longest prefix: {finite_state_machine.get_prefix_for_a_string(string)}\n')
 
 
-lab_2()
+lab_1()

@@ -1,8 +1,23 @@
 from src.table import Table
+from src.finit_state_machine import FiniteStateMachine
 
 NEWLINE = '\n'
 SPACE = ' '
 EMPTY_STRING = ''
+
+int_consts_finite_state_machine = FiniteStateMachine.read_machine('../data/state_machines/c_int_constants')
+# print('Integer const finite state machine')
+# print(int_consts_finite_state_machine)
+
+real_consts_finite_state_machine = FiniteStateMachine.read_machine('../data/state_machines/c_real_constants')
+# print('Real const finite state machine')
+# print(real_consts_finite_state_machine)
+
+ids_finite_state_machine = FiniteStateMachine.read_machine('../data/state_machines/ident')
+
+
+# print('Ids finite state machine')
+# print(ids_finite_state_machine)
 
 
 def get_atoms_recursive(text, line_number, separator_list):
@@ -42,13 +57,8 @@ def atom_is_const(atom):
     :param atom: to be verifies (string)
     :return: true if it is an id, false otherwise
     """
-    if atom[0] == '"' and atom[-1] == '"':
-        return True
-    try:
-        float(atom)
-        return True
-    except ValueError:
-        return False
+    return int_consts_finite_state_machine.verify_if_string_accepted(atom) \
+           or real_consts_finite_state_machine.verify_if_string_accepted(atom)
 
 
 def atom_is_id(atom):
@@ -57,7 +67,7 @@ def atom_is_id(atom):
     :param atom: to be verifies (string)
     :return: true if it is an id, false otherwise
     """
-    return len(atom) <= 8 and atom.isalpha()
+    return ids_finite_state_machine.verify_if_string_accepted(atom)
 
 
 def lexical_analyze(text, atoms_table, separator_list):
@@ -72,8 +82,8 @@ def lexical_analyze(text, atoms_table, separator_list):
     """
     atom_list = []
     for index, line in enumerate(text.split(NEWLINE)):
-        for token in line.split(SPACE):
-            line_atom_list = [(index + 1, atom) for atom in get_atoms_recursive(line, token, separator_list) if
+        for token in [x for x in line.split(SPACE) if x != '']:
+            line_atom_list = [(index + 1, atom) for atom in get_atoms_recursive(token, index, separator_list) if
                               atom != '']
             atom_list = [*atom_list, *line_atom_list]
 
